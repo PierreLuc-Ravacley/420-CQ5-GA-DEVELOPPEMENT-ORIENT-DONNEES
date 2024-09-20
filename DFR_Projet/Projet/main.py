@@ -5,10 +5,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import select
 
-from chambre import Chambre, TypeChambre
+from Modele.chambre import Chambre, TypeChambre
 
 # Configure the SQLAlchemy engine
-DATABASE_URL = 'mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server'
+DATABASE_URL = 'mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server'
 engine = create_engine(DATABASE_URL, use_setinputsizes=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
