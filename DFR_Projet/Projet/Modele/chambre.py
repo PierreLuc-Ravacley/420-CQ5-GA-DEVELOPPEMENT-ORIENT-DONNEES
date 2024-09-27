@@ -45,7 +45,7 @@ class Reservation(Base):
 
     date_fin_reservation: Mapped[datetime]
     date_debut_reservation: Mapped[datetime]
-    prix_jour: Mapped[Numeric]
+    prix_jour: Mapped[float] = mapped_column(Numeric)  # Utilisez float dans l'annotation et Numeric dans mapped_column
     info_reservation: Mapped[str]
     id_reservation: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
     fk_id_client: Mapped[UUID] = mapped_column(ForeignKey("client.id_client"))
