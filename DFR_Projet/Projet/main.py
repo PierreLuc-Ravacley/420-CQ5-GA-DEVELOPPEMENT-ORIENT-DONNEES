@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import select
 
-from Modele.chambre import Chambre, TypeChambre, Client
+from Modele.chambre import Chambre, TypeChambre, Client,Reservation
 
 # Configure the SQLAlchemy engine
 DATABASE_URL = 'mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server'
