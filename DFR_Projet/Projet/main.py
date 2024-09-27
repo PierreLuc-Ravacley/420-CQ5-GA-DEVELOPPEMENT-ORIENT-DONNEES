@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import select
 
-from Modele.chambre import Chambre, TypeChambre
+from Modele.chambre import Chambre, TypeChambre, Client
 
 # Configure the SQLAlchemy engine
 DATABASE_URL = 'mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server'
@@ -26,6 +26,13 @@ class ChambreDTO(BaseModel):
     disponible_reservation : bool
     autre_informations: str
     type_chambre: str
+
+class ClientDTO(BaseModel):  # Create a ClientDTO for easy integration with FastAPI
+    prenom: str
+    nom: str
+    adresse: str
+    mobile: str
+    mot_de_passe: str
     
 @app.get("/chambres/{no_chambre}")
 def read_item(no_chambre: int):
@@ -73,3 +80,10 @@ def read_item(chambre: ChambreDTO):
         
         return chambre
     
+@app.post("/creerClients/")  # client creation
+def create_client(client: ClientDTO):
+    with Session(engine) as session:
+        new_client = Client(**client.dict())  # new Client instance
+        session.add(new_client)
+        session.commit()
+        return {"message": "Le client a été creer"} 
