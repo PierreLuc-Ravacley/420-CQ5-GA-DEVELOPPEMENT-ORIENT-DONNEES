@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from modele.chambre import TypeChambre, Chambre
+from Modele.chambre import TypeChambre, Chambre
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class TypeChambreDTO(BaseModel):
@@ -26,3 +26,7 @@ class ChambreDTO(BaseModel):
         self.disponible_reservation = chambre.disponible_reservation
         self.autre_informations = chambre.autre_informations
         self.type_chambre = chambre.type_chambre
+        
+        
+        
+         
