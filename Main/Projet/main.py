@@ -3,7 +3,6 @@ from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNu
 
 app = FastAPI()
 
-
     
 @app.get("/chambres/{no_chambre}")
 def read_item(no_chambre: int):

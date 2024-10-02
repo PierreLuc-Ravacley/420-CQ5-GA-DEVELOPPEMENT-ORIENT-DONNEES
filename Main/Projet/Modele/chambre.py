@@ -17,6 +17,7 @@ class Chambre(Base):
     fk_type_chambre: Mapped[str] = mapped_column(ForeignKey("type_chambre.id_type_chambre"))
 
     type_chambre: Mapped['TypeChambre'] = relationship()
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="chambre")
 
 class TypeChambre(Base):
     __tablename__ = "type_chambre"
@@ -40,7 +41,8 @@ class Reservation(Base):
     fk_id_client: Mapped[str] = mapped_column(ForeignKey("client.id_client"))
     fk_id_chambre: Mapped[str] = mapped_column(ForeignKey("chambre.id_chambre"))
 
-    client: Mapped[List["Client"]] = relationship(back_populates="reservation")
+    client: Mapped['Client'] = relationship()
+    chambre: Mapped['Chambre'] = relationship()
     
 class Client(Base):
     __tablename__ = "client"
@@ -53,4 +55,4 @@ class Client(Base):
     #courriel: Mapped[str]
     id_client: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
 
-    reservation: Mapped['Reservation'] = relationship()
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="client") 
