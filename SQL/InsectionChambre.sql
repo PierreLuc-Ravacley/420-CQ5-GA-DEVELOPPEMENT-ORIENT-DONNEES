@@ -1,4 +1,4 @@
-USE [hotelDB]
+USE [Hotel]
 GO
 
 DECLARE @pk uniqueidentifier
@@ -19,19 +19,18 @@ BEGIN
     SET @id_type_choisi = (SELECT CAST(RAND()*(4-1)+1 AS INT));
     SET @uuid_choisi = (select value from @liste_id_type_chambre where id = @id_type_choisi);
 
-    INSERT INTO [dbo].[Chambre]
-               ([numChambre]
-               ,[numDePorteChambre]
-               ,[etatChambre]
-               ,[autresInformationsChambre]
-               ,[fkNumReservation])
-         VALUES
-               (@pk
-               ,@i
-               ,1
-               ,NULL
-               ,@uuid_choisi)
-
-    SET @i = @i + 1;
+    INSERT INTO [dbo].[chambre]
+			   ([numero_chambre]
+			   ,[disponible_reservation]
+			   ,[autre_informations]
+			   ,[id_chambre]
+			   ,[fk_type_chambre])
+		 VALUES
+			   (@i
+			   ,1
+			   ,NULL
+			   ,@pk
+			   ,@uuid_choisi)
+	SET @i = @i + 1;
 END
 GO
