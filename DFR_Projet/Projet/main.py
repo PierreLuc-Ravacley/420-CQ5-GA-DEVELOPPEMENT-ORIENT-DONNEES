@@ -15,4 +15,20 @@ def read_item(type: TypeChambreDTO):
 @app.post("/creerChambre")
 def read_item(chambre: ChambreDTO):
     return creerChambre(chambre)
+
+@app.get("/clients/")
+def read_clients():
+    return get_clients()
+
+@app.post("/creerClient/")
+def create_client(client: ClientDTO):
+    return creer_client(client)
+
+@app.get("/reservations/")
+def read_reservations():
+    return get_reservations()
+
+@app.post("/creerReservation/")
+def create_reservation(reservation: ReservationDTO):
+    return creer_reservation(reservation)
  

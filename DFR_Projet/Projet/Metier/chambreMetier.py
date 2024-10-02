@@ -39,3 +39,39 @@ def getChambreParNumero(no_chambre: int):
         
         for chambre in result.scalars():
             return ChambreDTO(chambre)
+
+
+def get_clients():
+    with Session(engine) as session:
+        stmt = select(Client)
+        result = session.execute(stmt)
+        clients = result.scalars().all()
+        return [{"id": c.id_client, "prenom": c.prenom, "nom": c.nom, "adresse": c.adresse, "mobile": c.mobile} for c in clients]
+
+def creer_client(client: ClientDTO):
+    with Session(engine) as session:
+        new_client = Client(**client.dict())
+        session.add(new_client)
+        session.commit()
+        return {"message": "Le client a été créé"}
+
+def get_reservations():
+    with Session(engine) as session:
+        stmt = select(Reservation)
+        result = session.execute(stmt)
+        reservations = result.scalars().all()
+        return [{"id": r.id_reservation, "date_debut": r.date_debut_reservation, "date_fin": r.date_fin_reservation} for r in reservations]
+
+def creer_reservation(reservation: ReservationDTO):
+    with Session(engine) as session:
+        new_reservation = Reservation(
+            date_debut_reservation=reservation.date_debut_reservation,
+            date_fin_reservation=reservation.date_fin_reservation,
+            prix_jour=reservation.prix_jour,
+            info_reservation=reservation.info_reservation,
+            client_id=reservation.fk_id_client,
+            chambre_id=reservation.fk_id_chambre
+        )
+        session.add(new_reservation)
+        session.commit()
+        return {"message": "La réservation a été créée"}
