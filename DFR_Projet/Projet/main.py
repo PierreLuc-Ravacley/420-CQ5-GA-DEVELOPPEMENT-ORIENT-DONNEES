@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero
-from Metier.chambreMetier import ChambreDTO, TypeChambreDTO,ClientDTO,ReservationDT0
+from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, get_clients,get_reservations,creer_client,creer_reservation
+from DTO.chambreDTO import ClientDTO, ReservationDTO, TypeChambreDTO, ChambreDTO
 
 app = FastAPI()
     
