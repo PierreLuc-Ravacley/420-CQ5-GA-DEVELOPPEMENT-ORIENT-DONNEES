@@ -18,6 +18,7 @@ class Chambre(Base):
     fk_type_chambre: Mapped[str] = mapped_column(ForeignKey("type_chambre.id_type_chambre"))
 
     type_chambre: Mapped['TypeChambre'] = relationship()
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="chambre")
 
 class TypeChambre(Base):
     __tablename__ = "type_chambre"
@@ -39,6 +40,8 @@ class Client(Base):
     mobile: Mapped[str]
     mot_de_passe: Mapped[str]
     id_client: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
+
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="client")
 
 class Reservation(Base):
     __tablename__ = "reservation"

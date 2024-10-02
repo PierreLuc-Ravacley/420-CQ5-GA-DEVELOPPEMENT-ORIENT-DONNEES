@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
-from DTO import ChambreDTO, TypeChambreDTO, ClientDTO, ReservationDTO  # Ajout des DTO manquants
+from DTO.chambreDTO import ChambreDTO,ReservationDTO,ClientDTO,TypeChambreDTO
 from Modele.chambre import Chambre, TypeChambre, Client, Reservation
 
 engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
