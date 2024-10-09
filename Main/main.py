@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
+from Metier.clientMetier import creerClient, modifierClient, ClientDTO
 
 app = FastAPI()
 
@@ -15,4 +16,11 @@ def read_item(type: TypeChambreDTO):
 @app.post("/creerChambre")
 def read_item(chambre: ChambreDTO):
     return creerChambre(chambre)
-    
+
+@app.post("/creerClient")
+def read_item(client: ClientDTO):
+    return creerClient(client)
+
+@app.post("/modifierClient{Prenom}")
+def read_item(client: ClientDTO):
+    return modifierClient(client)
