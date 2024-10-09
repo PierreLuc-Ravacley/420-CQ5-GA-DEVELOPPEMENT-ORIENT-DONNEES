@@ -1,18 +1,15 @@
 from fastapi import FastAPI
-from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
+from Metier.chambreMetier import  get_reservations, creer_reservation
+from DTO.chambreDTO import ReservationDTO
+
 
 app = FastAPI()
 
     
-@app.get("/chambres/{no_chambre}")
-def read_item(no_chambre: int):
-    return getChambreParNumero(no_chambre)
-    
-@app.post("/creerTypeChambre")
-def read_item(type: TypeChambreDTO):
-    return creerTypeChambre(type)
-    
-@app.post("/creerChambre")
-def read_item(chambre: ChambreDTO):
-    return creerChambre(chambre)
-    
+@app.get("/reservations/")
+def read_reservations():
+    return get_reservations()
+
+@app.post("/creerReservation/")
+def create_reservation(reservation: ReservationDTO):
+    return creer_reservation(reservation)
