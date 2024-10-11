@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
 from DTO.clientDTO import ClientDTO
-from Modele.chambre import Client
+from DTO.chambreDTO import ChambreDTO
+from Modele.chambre import Reservation, Chambre, TypeChambre, Client
 from sqlalchemy.exc import IntegrityError
 
 # Connection à la base de données
@@ -39,21 +40,21 @@ def creerClient(client: ClientDTO):
         except IntegrityError:
             session.rollback()
             raise ValueError("Erreur lors de la création du client/usager.")
-
-
-def getChambreParNumero(no_chambre: int):
-     with Session(engine) as session:
-        stmt = select(Chambre).where(Chambre.numero_chambre == no_chambre)
+        
+def getClientParNom(telephone_client: str):
+    with Session(engine) as session:
+        stmt = select(Client).where(Client.mobile == telephone_client)
         result = session.execute(stmt)
         
-        for chambre in result.scalars():
-            return ChambreDTO (chambre)
+        for client in result.scalars():
+            return ClientDTO.from_orm(client)
 
 
-def modifierClient(prenom_client: str, client_data: ClientDTO):
+
+def modifierClient(telephone_client: str, client_data: ClientDTO):
     with Session(engine) as session:
         # Vérifier si le client existe par prénom
-        client_exist = session.query(Client).filter(Client.prenom == prenom_client).first()
+        client_exist = session.query(Client).filter(Client.mobile == telephone_client).first()
         
         if not client_exist:
             raise ValueError("Client non trouvé.")
