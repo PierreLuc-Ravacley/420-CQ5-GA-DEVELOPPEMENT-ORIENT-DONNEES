@@ -1,23 +1,36 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from Modele.reservation import Reservation
-from datetime import datetime
+from uuid import UUID
+import datetime
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class ReservationDTO(BaseModel):
-    id_reservation: str
-    date_debut_reservation: datetime
-    date_fin_reservation: datetime
-    prix_jour: float
-    info_reservation: str
-    fk_id_client: str
-    fk_id_chambre: str
+    fk_id_client: UUID  # Client est obligatoire
+    fk_id_chambre: UUID  # Chambre est obligatoire
+    dateDebut: datetime.datetime  # Date de début est obligatoire
+    dateFin: datetime.datetime  # Date de fin est obligatoire
+    prixParJour: float  # Prix par jour est obligatoire
+    infoReservation: str = None  # Info réservation est optionnel
 
-    def __init__(self, reservation:Reservation):
-        super().__init__(id_reservation="", date_debut_reservation=datetime.min, date_fin_reservation=datetime.min, prix_jour=0.0, info_reservation="", fk_id_client="", fk_id_chambre="")
-        self.id_reservation = reservation.id_reservation
-        self.date_debut_reservation = reservation.date_debut_reservation
-        self.date_fin_reservation = reservation.date_fin_reservation
-        self.prix_jour = reservation.prix_jour
-        self.info_reservation = reservation.info_reservation
-        self.fk_id_client = reservation.fk_id_client
-        self.fk_id_chambre = reservation.fk_id_chambre
+    @validator('dateDebut', 'dateFin', pre=True)
+    def validate_dates(cls, value):
+        if value is None:
+            raise ValueError('Les dates sont requises.')
+        return value
+
+    @validator('prixParJour')
+    def prix_positif(cls, value):
+        if value <= 0:
+            raise ValueError('Le prix par jour doit être positif.')
+        return value
+
+    @classmethod
+    def from_model(cls, reservation: Reservation):
+        return cls(
+            fk_id_client=reservation.fk_id_client,
+            fk_id_chambre=reservation.fk_id_chambre,
+            dateDebut=reservation.date_debut_reservation,
+            dateFin=reservation.date_fin_reservation,
+            prixParJour=reservation.prix_jour,
+            infoReservation=reservation.info_reservation
+        )
