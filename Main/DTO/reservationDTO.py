@@ -23,7 +23,7 @@ class ReservationDTO(BaseModel):
         if value <= 0:
             raise ValueError('Le prix par jour doit être positif.')
         return value
-
+     
     @classmethod
     def from_model(cls, reservation: Reservation):
         return cls(
@@ -34,3 +34,7 @@ class ReservationDTO(BaseModel):
             prixParJour=reservation.prix_jour,
             infoReservation=reservation.info_reservation
         )
+    
+    class Config:
+        orm_mode = True
+       
