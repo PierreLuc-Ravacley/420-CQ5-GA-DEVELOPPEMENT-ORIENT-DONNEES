@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
 from DTO.reservationDTO import ReservationDTO
-from Metier.reservationMetier import get_reservations, creer_reservation
+from Metier.reservationMetier import get_reservations, creer_reservation,supprimer_reservation
 import logging
+from uuid import UUID
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -31,7 +33,18 @@ def create_reservation(reservation: ReservationDTO):
         logging.info(f"Création de la réservation: {reservation}")
         return creer_reservation(reservation)
     except Exception as e:
-        # Ajoutez une trace d'exception complète pour le debug
+        # Ajoute une trace d'exception complète pour le debug
         logging.error(f"Erreur lors de la création de la réservation: {e}", exc_info=True)
-        return {"error": f"Erreur interne : {str(e)}"}  # Affichez le message d'erreur réel
+        return {"error": f"Erreur interne : {str(e)}"}  # Affiche le message d'erreur réel
+
+
+
+
+@app.delete("/supprimerReservation/{id_reservation}")
+def delete_reservation(id_reservation: UUID):
+    try:
+        return supprimer_reservation(id_reservation)
+    except Exception as e:
+        logging.error(f"Erreur lors de la suppression de la réservation: {e}", exc_info=True)
+        raise HTTPException(status_code=400, detail=str(e))
 
