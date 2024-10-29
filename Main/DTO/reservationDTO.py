@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, validator
 from Modele.reservation import Reservation
 from uuid import UUID
@@ -6,6 +7,7 @@ import re
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class ReservationDTO(BaseModel):
+    id_reservation: Optional[UUID] = None  #l'ID de réservation optionnel
     fk_id_client: UUID  # Client est obligatoire
     fk_id_chambre: UUID  # Chambre est obligatoire
     dateDebut: date  # Date de début est obligatoire
@@ -28,12 +30,13 @@ class ReservationDTO(BaseModel):
     @validator('prixParJour')
     def prix_positif(cls, value):
         if value <= 0:
-            raise ValueError('Le prix par jour doit être positif.Exemple de 0 au maximun permis.')
+            raise ValueError('Le prix par jour doit être positif. Exemple de 0 au maximum permis.')
         return value
 
     @classmethod
     def from_model(cls, reservation: Reservation):
         return cls(
+            id_reservation=reservation.id_reservation,  # Inclure l'ID de réservation
             fk_id_client=reservation.fk_id_client,
             fk_id_chambre=reservation.fk_id_chambre,
             dateDebut=reservation.date_debut_reservation.date(),
@@ -42,9 +45,6 @@ class ReservationDTO(BaseModel):
             infoReservation=reservation.info_reservation
         )
     
-        
-class Config:
-    orm_mode = True
-    from_attributes = True 
-
-       
+    class Config:
+        orm_mode = True
+        from_attributes = True 
