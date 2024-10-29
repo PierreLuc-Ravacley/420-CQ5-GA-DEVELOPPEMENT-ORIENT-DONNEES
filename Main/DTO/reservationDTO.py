@@ -34,7 +34,7 @@ class ReservationDTO(BaseModel):
     @classmethod
     def from_model(cls, reservation: Reservation):
         return cls(
-            id_reservation=reservation.id_reservation,  # Inclure l'ID de réservation
+            
             fk_id_client=reservation.fk_id_client,
             fk_id_chambre=reservation.fk_id_chambre,
             dateDebut=reservation.date_debut_reservation.date(),
@@ -42,7 +42,14 @@ class ReservationDTO(BaseModel):
             prixParJour=reservation.prix_jour,
             infoReservation=reservation.info_reservation
         )
-    
+
+class CriteresRechercheDTO(BaseModel):
+    idReservation: str = None
+    idClient: str = None
+    idChambre: str = None
+    nom: str = None
+    prenom: str = None
+
     class Config:
         orm_mode = True
         from_attributes = True 

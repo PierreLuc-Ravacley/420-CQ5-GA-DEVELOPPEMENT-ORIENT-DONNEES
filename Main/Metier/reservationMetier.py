@@ -1,10 +1,11 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
-from DTO.reservationDTO import ReservationDTO
+from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
 from Modele.reservation import Reservation
 from Modele.chambre import Chambre,Client
 from uuid import UUID
 from datetime import datetime
+from sqlalchemy.exc import NoResultFound
 
 engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
 
@@ -111,3 +112,34 @@ def supprimer_reservation(id_reservation: UUID):
         session.commit()
 
         return {"status": "Réservation supprimée avec succès."}
+    
+def rechercher_reservation(criteres: CriteresRechercheDTO):
+    with Session(engine) as session:
+        stmt = select(Reservation)
+        
+        # Applique les filtres en fonction des critères de recherche
+        if criteres.idReservation:
+            stmt = stmt.where(Reservation.id_reservation == UUID(criteres.idReservation))
+        if criteres.idClient:
+            stmt = stmt.where(Reservation.fk_id_client == UUID(criteres.idClient))
+        if criteres.idChambre:
+            stmt = stmt.where(Reservation.fk_id_chambre == UUID(criteres.idChambre))
+        
+        if criteres.nom or criteres.prenom:
+            stmt = stmt.join(Client)
+            if criteres.nom:
+                stmt = stmt.where(Client.nom == criteres.nom)
+            if criteres.prenom:
+                stmt = stmt.where(Client.prenom == criteres.prenom)
+        
+        try:
+            # Exécute la requête et récupère les résultats
+            result = session.execute(stmt).scalars().all()
+            if not result:
+                raise NoResultFound()
+            
+            # Convertit les résultats en DTO
+            return [ReservationDTO(reservation) for reservation in result]
+        
+        except NoResultFound:
+            raise ValueError("Aucune réservation trouvée avec les critères spécifiés.")
