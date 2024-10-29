@@ -105,3 +105,17 @@ def modifier_reservation(id_reservation: UUID, reservation: ReservationDTO):
         session.commit()
 
         return ReservationDTO.from_model(existing_reservation)
+
+
+def supprimer_reservation(id_reservation: UUID):
+    with Session(engine) as session:
+        # Vérifie si la réservation existe
+        reservation = session.execute(select(Reservation).where(Reservation.id_reservation == id_reservation)).scalar_one_or_none()
+        if reservation is None:
+            raise ValueError("La réservation n'existe pas.")
+
+        # Supprime la réservation
+        session.delete(reservation)
+        session.commit()
+
+        return {"status": "Réservation supprimée avec succès."}

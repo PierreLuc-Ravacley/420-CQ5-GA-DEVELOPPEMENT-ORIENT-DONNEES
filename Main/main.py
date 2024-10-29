@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
 from DTO.reservationDTO import ReservationDTO
-from Metier.reservationMetier import get_reservations, creer_reservation, modifier_reservation
+from Metier.reservationMetier import get_reservations, creer_reservation, modifier_reservation,supprimer_reservation
 import logging
 from uuid import UUID
 from fastapi import HTTPException
@@ -45,4 +45,10 @@ def update_reservation(id_reservation: UUID, reservation: ReservationDTO):
         logging.error(f"Erreur lors de la modification de la réservation: {e}", exc_info=True)
         raise HTTPException(status_code=400, detail=str(e))
 
-
+@app.delete("/supprimerReservation/{id_reservation}")
+def delete_reservation(id_reservation: UUID):
+    try:
+        return supprimer_reservation(id_reservation)
+    except Exception as e:
+        logging.error(f"Erreur lors de la suppression de la réservation: {e}", exc_info=True)
+        raise HTTPException(status_code=400, detail=str(e))
