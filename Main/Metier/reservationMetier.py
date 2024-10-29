@@ -55,11 +55,53 @@ def creer_reservation(reservation: ReservationDTO):
         session.add(nouvelle_reservation)
         session.commit()
 
-        # Récupérer la réservation nouvellement créée depuis la base de données
+        # Récupére la réservation nouvellement créée depuis la base de données
         reservation_cree = session.execute(select(Reservation).where(Reservation.id_reservation == nouvelle_reservation.id_reservation)).scalar_one()
 
-        # Convertir la réservation créée en ReservationDTO
+        # Converti la réservation créée en ReservationDTO
         reservation_dto = ReservationDTO.from_model(reservation_cree)
 
         return reservation_dto
     
+def modifier_reservation(id_reservation: UUID, reservation: ReservationDTO):
+    with Session(engine) as session:
+        # Vérifie si la réservation existe
+        existing_reservation = session.execute(select(Reservation).where(Reservation.id_reservation == id_reservation)).scalar_one_or_none()
+        if existing_reservation is None:
+            raise ValueError("La réservation n'existe pas.")
+
+        # Vérifie si le client existe
+        client = session.execute(select(Client).where(Client.id_client == reservation.fk_id_client)).scalar_one_or_none()
+        if client is None:
+            raise ValueError("Le client n'existe pas.")
+
+        # Vérifie si la chambre existe et si elle est disponible
+        chambre = session.execute(select(Chambre).where(Chambre.id_chambre == reservation.fk_id_chambre)).scalar_one_or_none()
+        if chambre is None or not chambre.disponible_reservation:
+            raise ValueError("La chambre n'existe pas ou n'est pas disponible.")
+
+        # Validation des dates
+        if reservation.dateDebut >= reservation.dateFin:
+            raise ValueError("La date de début doit être antérieure à la date de fin.")
+
+        # Vérifie que la chambre est libre pendant la période demandée
+        stmt = select(Reservation).where(
+            Reservation.fk_id_chambre == reservation.fk_id_chambre,
+            Reservation.id_reservation != id_reservation,  # Ignore la réservation actuelle
+            Reservation.date_debut_reservation < reservation.dateFin,
+            Reservation.date_fin_reservation > reservation.dateDebut
+        )
+        if session.execute(stmt).first() is not None:
+            raise ValueError("La chambre est déjà réservée pendant cette période.")
+
+        # Met à jour la réservation
+        existing_reservation.fk_id_client = reservation.fk_id_client
+        existing_reservation.fk_id_chambre = reservation.fk_id_chambre
+        existing_reservation.date_debut_reservation = datetime.combine(reservation.dateDebut, datetime.min.time())  
+        existing_reservation.date_fin_reservation = datetime.combine(reservation.dateFin, datetime.min.time()) 
+        existing_reservation.prix_jour = reservation.prixParJour
+        existing_reservation.info_reservation = reservation.infoReservation
+
+        session.commit()
+
+        return ReservationDTO.from_model(existing_reservation)
