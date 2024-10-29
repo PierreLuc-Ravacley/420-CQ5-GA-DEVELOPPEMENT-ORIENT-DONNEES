@@ -1,4 +1,3 @@
-from typing import Optional
 from pydantic import BaseModel, validator
 from Modele.reservation import Reservation
 from uuid import UUID
@@ -7,7 +6,6 @@ import re
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class ReservationDTO(BaseModel):
-    id_reservation: Optional[UUID] = None  #l'ID de réservation optionnel
     fk_id_client: UUID  # Client est obligatoire
     fk_id_chambre: UUID  # Chambre est obligatoire
     dateDebut: date  # Date de début est obligatoire

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
 from DTO.reservationDTO import ReservationDTO
-from Metier.reservationMetier import get_reservations, creer_reservation, modifier_reservation,supprimer_reservation
+from Metier.reservationMetier import creer_reservation, modifier_reservation,supprimer_reservation
 import logging
 from uuid import UUID
 from fastapi import HTTPException
@@ -21,9 +21,6 @@ def read_item(type: TypeChambreDTO):
 def read_item(chambre: ChambreDTO):
     return creerChambre(chambre)
 
-@app.get("/reservations/")
-def read_reservations():
-    return get_reservations()
 
 logging.basicConfig(level=logging.INFO)
 

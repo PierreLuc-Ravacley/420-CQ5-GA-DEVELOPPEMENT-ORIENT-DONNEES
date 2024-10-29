@@ -9,14 +9,6 @@ from datetime import datetime
 engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
 
 
-def get_reservations():
-    with Session(engine) as session:
-        stmt = select(Reservation)
-        result = session.execute(stmt)
-        reservations = result.scalars().all()
-        return [ReservationDTO.from_model(reservation=r) for r in reservations]
-
-
 def creer_reservation(reservation: ReservationDTO):
     with Session(engine) as session:
         # Vérifie si le client existe
