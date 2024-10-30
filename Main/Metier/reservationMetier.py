@@ -139,7 +139,7 @@ def rechercher_reservation(criteres: CriteresRechercheDTO):
                 raise NoResultFound()
             
             # Convertit les résultats en DTO
-            return [ReservationDTO(reservation) for reservation in result]
+            return [ReservationDTO.from_model(reservation) for reservation in result]
         
         except NoResultFound:
             raise ValueError("Aucune réservation trouvée avec les critères spécifiés.")
