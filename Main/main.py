@@ -94,7 +94,7 @@ def read_item(client: ClientDTO):
 
 # Endpoint pour obtenir un client par son prénom, avant de faire la modification
 @app.get("/verifierClient/{telephone_client}", response_model=ClientDTO)
-def get_client_for_verification(telephone_client: str):
+def get_client_for_verification(telephone_client: str, current_user: Annotated[User, Depends(get_current_user)] ):
     client = getClientParNom(telephone_client)
     if not client:
         raise HTTPException(status_code=404, detail="Client non trouvé")
