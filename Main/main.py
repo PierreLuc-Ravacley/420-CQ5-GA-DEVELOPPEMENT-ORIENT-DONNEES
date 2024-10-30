@@ -31,6 +31,8 @@ def get_client_for_verification(telephone_client: str):
     # Retourne les informations actuelles du client pour vérification
     return client
 
+
+
 # Endpoint pour modifier un client par son prénom
 @app.put("/modifierClient/{telephone_client}", response_model=ClientDTO)
 def modify_client(telephone_client: str, client_data: ClientDTO):
