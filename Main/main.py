@@ -5,6 +5,7 @@ from Metier.reservationMetier import creer_reservation, modifier_reservation,sup
 import logging
 from uuid import UUID
 from fastapi import HTTPException
+import uvicorn
 
 app = FastAPI()
 
@@ -57,3 +58,4 @@ def search_reservation(criteres: CriteresRechercheDTO):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     
+uvicorn.run(app, host="127.0.0.1", port=8000)   
