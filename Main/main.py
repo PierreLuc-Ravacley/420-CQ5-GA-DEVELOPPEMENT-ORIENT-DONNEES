@@ -56,3 +56,4 @@ def search_reservation(criteres: CriteresRechercheDTO):
         return rechercher_reservation(criteres)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    
