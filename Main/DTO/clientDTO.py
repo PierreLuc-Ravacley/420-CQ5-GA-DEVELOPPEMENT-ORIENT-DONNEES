@@ -12,7 +12,7 @@ class ClientDTO(BaseModel):
 
     # Configuration Pydantic pour la compatibilité avec l'ORM
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     # Méthode de classe pour créer un DTO à partir d'un objet Client (entité ORM)
     @classmethod
