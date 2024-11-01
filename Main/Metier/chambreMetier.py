@@ -23,7 +23,10 @@ def creerChambre(chambre: ChambreDTO):
                 session.commit()
             
                 return chambre
-            
+
+
+
+
 def creerTypeChambre(typeChambre: TypeChambreDTO):
      with Session(engine) as session:
         nouveauTypeChambre = TypeChambre (typeChambre)
@@ -32,6 +35,10 @@ def creerTypeChambre(typeChambre: TypeChambreDTO):
         session.commit()
         
         return typeChambre
+
+
+
+
 
 def getChambreParNumero(no_chambre: int):
      with Session(engine) as session:
