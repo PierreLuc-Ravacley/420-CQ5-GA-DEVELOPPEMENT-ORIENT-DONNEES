@@ -52,7 +52,7 @@ class Client(Base):
     adresse: Mapped[str]
     mobile: Mapped[str]
     mot_de_passe: Mapped[str]
-    #courriel: Mapped[str]
+    courriel: Mapped[str]
     id_client: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
 
     reservations: Mapped[List["Reservation"]] = relationship(back_populates="client") 
