@@ -3,7 +3,8 @@ from sqlalchemy import create_engine, select
 from DTO.chambreDTO import ChambreDTO, CriteresRechercheDTO
 from Modele.chambre import Chambre, TypeChambre
 
-engine = create_engine('mssql+pyodbc://LAPTOP-PL76LM4V\SQLEXPRESS02/Hotel?driver=SQL Server', use_setinputsizes=False)
+#engine = create_engine('mssql+pyodbc://LAPTOP-PL76LM4V\SQLEXPRESS02/Hotel?driver=SQL Server', use_setinputsizes=False)
+#engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
 
 def creerChambre(chambre: ChambreDTO):
     with Session(engine) as session:
@@ -23,6 +24,22 @@ def creerChambre(chambre: ChambreDTO):
                 session.commit()
             
                 return chambre
+
+
+
+
+def creerTypeChambre(typeChambre: TypeChambreDTO):
+     with Session(engine) as session:
+        nouveauTypeChambre = TypeChambre (typeChambre)
+
+        session.add(nouveauTypeChambre)
+        session.commit()
+        
+        return typeChambre
+
+
+
+
 
 def getChambreParNumero(no_chambre: int):
      with Session(engine) as session:
