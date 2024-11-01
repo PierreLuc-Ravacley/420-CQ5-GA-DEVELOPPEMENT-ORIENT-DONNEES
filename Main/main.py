@@ -1,10 +1,19 @@
+from typing import List
+from fastapi import FastAPI, HTTPException
+from Metier.chambreMetier import creerChambre, getChambreParNumero, ChambreDTO
+from Metier.typeChambreMetier import creerTypeChambre, TypeChambreDTO
+from Metier.reservationMetier import rechercherReservation
+from Metier.chambreMetier import rechercherChambreLibre
+from DTO.reservationDTO import CriteresRechercheDTO
+from DTO.chambreDTO import CriteresRechercheDTO
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from Metier.chambreMetier import creerChambre, creerTypeChambre, getChambreParNumero, ChambreDTO, TypeChambreDTO
 from DTO.reservationDTO import ReservationDTO,CriteresRechercheDTO
 from Metier.reservationMetier import creer_reservation, modifier_reservation,supprimer_reservation,rechercher_reservation
 import logging
 from uuid import UUID
-import uvicorn
+
 from Metier.clientMetier import creerClient, getClientParNom, modifierClient, ClientDTO
 
 from typing import Annotated
@@ -12,7 +21,7 @@ from pydantic import BaseModel
 
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-import uvicorn
+
 
 fake_users_db = {
     "johndoe": {
@@ -93,6 +102,23 @@ def read_item(type: TypeChambreDTO):
 def read_item(chambre: ChambreDTO):
     return creerChambre(chambre)
 
+@app.post("/rechercherReservation")
+def read_item(critere: CriteresRechercheDTO):
+    try:
+        return rechercherReservation(critere)
+    except ValueError as e:
+        return HTTPException(status_code=404, detail=str(e))
+    
+@app.post("/rechercherChambreLibre")
+def read_item(critere: CriteresRechercheDTO):
+    try:
+        return rechercherChambreLibre(critere)
+    except ValueError as e:
+        return HTTPException(status_code=404, detail=str(e))
+ 
+uvicorn.run(app, host="127.0.0.1", port=8000)
+    
+    
 
 logging.basicConfig(level=logging.INFO)
 

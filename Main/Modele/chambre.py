@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from sqlalchemy import ForeignKey
@@ -16,20 +17,21 @@ class Chambre(Base):
     id_chambre: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
     fk_type_chambre: Mapped[str] = mapped_column(ForeignKey("type_chambre.id_type_chambre"))
 
-    type_chambre: Mapped['TypeChambre'] = relationship()
+    type_chambre: Mapped["TypeChambre"] = relationship()
     reservations: Mapped[List["Reservation"]] = relationship(back_populates="chambre")
 
-class TypeChambre(Base):
-    __tablename__ = "type_chambre"
+class Client(Base):
+    __tablename__ = "client"
 
-    nom_type: Mapped[str]
-    prix_plafond: Mapped[float]
-    prix_plancher: Mapped[float]
-    description_chambre: Mapped[str]
-    id_type_chambre: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
+    prenom: Mapped[str]
+    nom: Mapped[str]
+    adresse: Mapped[str]
+    mobile: Mapped[str]
+    mot_de_passe: Mapped[str]
+    id_client: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
 
-    chambres: Mapped[List["Chambre"]] = relationship(back_populates="type_chambre")
-    
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="client") 
+
 class Reservation(Base):
     __tablename__ = "reservation"
 
@@ -43,16 +45,12 @@ class Reservation(Base):
 
     client: Mapped['Client'] = relationship()
     chambre: Mapped['Chambre'] = relationship()
-    
-class Client(Base):
-    __tablename__ = "client"
 
-    prenom: Mapped[str]
-    nom: Mapped[str]
-    adresse: Mapped[str]
-    mobile: Mapped[str]
-    mot_de_passe: Mapped[str]
-    courriel: Mapped[str]
-    id_client: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
+class TypeChambre(Base):
+    __tablename__ = "type_chambre"
 
-    reservations: Mapped[List["Reservation"]] = relationship(back_populates="client") 
+    nom_type: Mapped[str]
+    prix_plafond: Mapped[float]
+    prix_plancher: Mapped[float]
+    description_chambre: Mapped[str]
+    id_type_chambre: Mapped[UUID] = mapped_column(default=uuid4, primary_key=True)
