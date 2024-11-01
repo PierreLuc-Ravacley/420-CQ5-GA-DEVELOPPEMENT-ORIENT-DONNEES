@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, select
 from DTO.chambreDTO import ChambreDTO, TypeChambreDTO
 from Modele.chambre import Chambre, TypeChambre
 
-engine = create_engine('mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server', use_setinputsizes=False)
+engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
 
 def creerChambre(chambre: ChambreDTO):
     with Session(engine) as session:
