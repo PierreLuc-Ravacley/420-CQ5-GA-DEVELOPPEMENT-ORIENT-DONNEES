@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine
 from DTO.typeChambreDTO import TypeChambreDTO
-from Modele.chambre import TypeChambre
 
-engine = create_engine('mssql+pyodbc://LAPTOP-PL76LM4V\SQLEXPRESS02/Hotel?driver=SQL Server', use_setinputsizes=False)
+engine = create_engine('mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server', use_setinputsizes=False)
 
 def creerTypeChambre(typeChambre: TypeChambreDTO):
      with Session(engine) as session:

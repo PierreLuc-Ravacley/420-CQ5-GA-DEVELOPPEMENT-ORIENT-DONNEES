@@ -1,8 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
 from DTO.clientDTO import ClientDTO
-from DTO.chambreDTO import ChambreDTO
-from Modele.chambre import Reservation, Chambre, TypeChambre, Client
+from Modele.client import Client
 from sqlalchemy.exc import IntegrityError
 
 # Connection à la base de données

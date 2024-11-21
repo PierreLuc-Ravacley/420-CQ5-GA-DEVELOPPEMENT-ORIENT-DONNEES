@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from Modele.chambre import Client
+from Modele.client import Client
 
 # Data Transfer Object : Pydantic BaseModel pour une intégration facile avec FastAPI
 class ClientDTO(BaseModel):

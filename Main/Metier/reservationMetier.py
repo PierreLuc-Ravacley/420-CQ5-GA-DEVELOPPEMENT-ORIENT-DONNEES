@@ -1,8 +1,18 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
-from Modele.chambre import Reservation, Client
+from sqlalchemy.exc import NoResultFound
+
+from uuid import UUID
+from datetime import datetime
+
+from Modele.reservation import Reservation
+from Modele.chambre import Chambre
+from Modele.client import Client
+
 from DTO.reservationDTO import CriteresRechercheDTO, ReservationDTO
-engine = create_engine('mssql+pyodbc://localhost\\sqlexpress01/Hotel?driver=SQL Server', use_setinputsizes=False)
+
+engine = create_engine('mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server', use_setinputsizes=False)
+
 
 def rechercherReservation(criteres: CriteresRechercheDTO):
     with Session(engine) as session:
@@ -50,17 +60,6 @@ def rechercherReservation(criteres: CriteresRechercheDTO):
         return reservations
            
             
-            
-from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
-from Modele.reservation import Reservation
-from Modele.chambre import Chambre,Client
-from uuid import UUID
-from datetime import datetime
-from sqlalchemy.exc import NoResultFound
-
-engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
-
-
 def creer_reservation(reservation: ReservationDTO):
     with Session(engine) as session:
         # Vérifie si le client existe
