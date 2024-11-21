@@ -3,10 +3,9 @@ from uuid import UUID, uuid4
 import datetime
 
 from sqlalchemy import String, Float, ForeignKey, DateTime
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from Modele.base import Base
-
 
 class Reservation(Base):
     __tablename__ = "reservation"

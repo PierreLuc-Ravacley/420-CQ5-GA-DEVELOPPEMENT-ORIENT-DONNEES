@@ -7,11 +7,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 import uvicorn
 
+from database import engine  # Import centralized engine
 from Modele.base import Base  # Ensure shared Base is loaded
-from Modele.chambre import Chambre
-from Modele.client import Client
-from Modele.reservation import Reservation
-from Modele.typeChambre import TypeChambre
 
 from Metier.chambreMetier import (
     creerChambre,
@@ -25,26 +22,17 @@ from Metier.reservationMetier import (
     modifier_reservation,
     supprimer_reservation,
     rechercher_reservation,
-    rechercherReservation,
 )
 from Metier.clientMetier import creerClient, getClientParNom, modifierClient, ClientDTO
 from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-# Database Configuration
-DATABASE_URL = "sqlite:///example.db"  # Update with your database URL
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
-
-# Create tables
-Base.metadata.create_all(bind=engine)
-
 # Initialize FastAPI
 app = FastAPI()
 
-# Fake database for authentication
+# Create tables (only needed during initial setup)
+Base.metadata.create_all(bind=engine)
+
+# Fake database for authentication (for demo purposes only)
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",

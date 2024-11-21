@@ -2,7 +2,7 @@ from typing import List
 from uuid import UUID, uuid4
 
 from sqlalchemy import String, Boolean, ForeignKey, Integer
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from Modele.base import Base
 

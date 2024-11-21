@@ -1,14 +1,11 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from DTO.clientDTO import ClientDTO
 from Modele.client import Client
 from sqlalchemy.exc import IntegrityError
-
-# Connection à la base de données
-engine = create_engine('mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server', use_setinputsizes=False)
+from database import SessionLocal
 
 def creerClient(client: ClientDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         # Vérifier l'unicité du courriel et du numéro de mobile
         courriel_existe = session.query(Client).filter_by(courriel=client.courriel).first()
         mobile_existe = session.query(Client).filter_by(mobile=client.mobile).first()
@@ -41,7 +38,7 @@ def creerClient(client: ClientDTO):
             raise ValueError("Erreur lors de la création du client/usager.")
         
 def getClientParNom(telephone_client: str):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         stmt = select(Client).where(Client.mobile == telephone_client)
         result = session.execute(stmt)
         
@@ -51,7 +48,7 @@ def getClientParNom(telephone_client: str):
 
 
 def modifierClient(telephone_client: str, client_data: ClientDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         # Vérifier si le client existe par prénom
         client_exist = session.query(Client).filter(Client.mobile == telephone_client).first()
         

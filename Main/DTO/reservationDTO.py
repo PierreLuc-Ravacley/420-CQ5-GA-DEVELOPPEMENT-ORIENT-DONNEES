@@ -1,11 +1,9 @@
-import datetime
 from uuid import UUID
 from pydantic import BaseModel, validator
 from datetime import date
 import re
 from Modele.reservation import Reservation
 from DTO.chambreDTO import ChambreDTO
-
 
 class ReservationDTO(BaseModel):
     fk_id_client: UUID  # Client ID is mandatory

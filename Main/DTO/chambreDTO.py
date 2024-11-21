@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from Modele.chambre import Chambre
 
-
-
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class CriteresRechercheDTO(BaseModel):
     numero_chambre: str

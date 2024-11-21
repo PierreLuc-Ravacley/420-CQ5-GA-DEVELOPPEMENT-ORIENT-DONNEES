@@ -2,10 +2,9 @@ from typing import List
 from uuid import UUID, uuid4
 
 from sqlalchemy import String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from Modele.base import Base
-
 
 class Client(Base):
     __tablename__ = "client"
