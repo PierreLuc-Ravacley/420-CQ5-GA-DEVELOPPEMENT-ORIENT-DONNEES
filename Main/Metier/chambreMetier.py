@@ -3,6 +3,8 @@ from DTO.chambreDTO import ChambreDTO, CriteresRechercheDTO
 from Modele.chambre import Chambre
 from database import SessionLocal
 
+
+
 def creerChambre(chambre: ChambreDTO):
     with SessionLocal() as session:
             stmt = select(typeChambre).where(typeChambre.nom_type == chambre.type_chambre)

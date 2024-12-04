@@ -3,7 +3,7 @@ from Modele.chambre import Chambre
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class CriteresRechercheDTO(BaseModel):
-    numero_chambre: str
+    numero_chambre: str | None = None 
     #disponible_reservation : str
     
 class ChambreDTO(BaseModel): 
@@ -18,7 +18,3 @@ class ChambreDTO(BaseModel):
         self.disponible_reservation = chambre.disponible_reservation
         self.autre_informations = chambre.autre_informations
         self.type_chambre = chambre.fk_type_chambre
-
-
-        
-        

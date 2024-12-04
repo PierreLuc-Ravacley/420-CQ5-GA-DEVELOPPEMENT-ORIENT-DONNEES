@@ -4,6 +4,7 @@ import logging
 
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
@@ -16,6 +17,7 @@ from Metier.chambreMetier import (
     rechercherChambreLibre,
     ChambreDTO,
 )
+
 from Metier.typeChambreMetier import creerTypeChambre, TypeChambreDTO
 from Metier.reservationMetier import (
     creer_reservation,
@@ -25,12 +27,6 @@ from Metier.reservationMetier import (
 )
 from Metier.clientMetier import creerClient, getClientParNom, modifierClient, ClientDTO
 from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
-
-# Initialize FastAPI
-app = FastAPI()
-
-# Create tables (only needed during initial setup)
-Base.metadata.create_all(bind=engine)
 
 # Fake database for authentication (for demo purposes only)
 fake_users_db = {
@@ -47,6 +43,22 @@ fake_users_db = {
         "hashed_password": "fakehashedsecret2",
     },
 }
+
+# Initialize FastAPI
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Create tables (only needed during initial setup)
+Base.metadata.create_all(bind=engine)
+
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
