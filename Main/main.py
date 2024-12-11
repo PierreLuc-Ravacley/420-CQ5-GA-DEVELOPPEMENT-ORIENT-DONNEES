@@ -28,7 +28,7 @@ from Metier.reservationMetier import (
 from Metier.clientMetier import creerClient, getClientParNom, modifierClient, ClientDTO
 from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
 
-# Fake database for authentication (for demo purposes only)
+# Fake database for authentication 
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",

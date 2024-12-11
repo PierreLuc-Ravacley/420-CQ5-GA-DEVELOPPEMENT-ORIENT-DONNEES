@@ -41,7 +41,7 @@ class ReservationDTO(BaseModel):
             dateFin=reservation.date_fin_reservation.date(),
             prixParJour=reservation.prix_jour,
             infoReservation=reservation.info_reservation,
-            chambre=ChambreDTO.from_model(reservation.chambre) if reservation.chambre else None,
+            chambre=ChambreDTO.from_model(reservation.chambre) if reservation.chambre else None, 
         )
 
 
