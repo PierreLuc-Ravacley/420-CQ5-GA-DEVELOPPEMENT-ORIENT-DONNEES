@@ -1,13 +1,12 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from DTO.chambreDTO import ChambreDTO, CriteresRechercheDTO
-from Modele.chambre import Chambre, TypeChambre
+from Modele.chambre import Chambre
+from database import SessionLocal
 
-#engine = create_engine('mssql+pyodbc://LAPTOP-PL76LM4V\SQLEXPRESS02/Hotel?driver=SQL Server', use_setinputsizes=False)
-#engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
+
 
 def creerChambre(chambre: ChambreDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
             stmt = select(typeChambre).where(typeChambre.nom_type == chambre.type_chambre)
             result = session.execute(stmt)
 
@@ -25,24 +24,8 @@ def creerChambre(chambre: ChambreDTO):
             
                 return chambre
 
-
-
-
-def creerTypeChambre(typeChambre: TypeChambreDTO):
-     with Session(engine) as session:
-        nouveauTypeChambre = TypeChambre (typeChambre)
-
-        session.add(nouveauTypeChambre)
-        session.commit()
-        
-        return typeChambre
-
-
-
-
-
 def getChambreParNumero(no_chambre: int):
-     with Session(engine) as session:
+     with SessionLocal() as session:
         stmt = select(Chambre).where(Chambre.numero_chambre == no_chambre)
         result = session.execute(stmt)
         
@@ -51,7 +34,7 @@ def getChambreParNumero(no_chambre: int):
         
 
 def rechercherChambreLibre(criteres: CriteresRechercheDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
 
         if(criteres.numero_chambre and not criteres.numero_chambre.isnumeric() == False):
             raise ValueError('Le numero de chambre doit être un numero')

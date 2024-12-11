@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from Modele.chambre import TypeChambre
+from Modele.typeChambre import TypeChambre
 
 
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI

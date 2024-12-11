@@ -1,11 +1,20 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select
-from Modele.chambre import Reservation, Client
+from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
+
+from uuid import UUID
+from datetime import datetime
+
+from Modele.reservation import Reservation
+from Modele.chambre import Chambre
+from Modele.client import Client
+
 from DTO.reservationDTO import CriteresRechercheDTO, ReservationDTO
-engine = create_engine('mssql+pyodbc://localhost\\sqlexpress01/Hotel?driver=SQL Server', use_setinputsizes=False)
+
+from database import SessionLocal
+
 
 def rechercherReservation(criteres: CriteresRechercheDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
 
         if(criteres.prenom and not len(criteres.prenom) > 60):
             raise ValueError('Le prenom est trop long')
@@ -50,19 +59,8 @@ def rechercherReservation(criteres: CriteresRechercheDTO):
         return reservations
            
             
-            
-from DTO.reservationDTO import ReservationDTO, CriteresRechercheDTO
-from Modele.reservation import Reservation
-from Modele.chambre import Chambre,Client
-from uuid import UUID
-from datetime import datetime
-from sqlalchemy.exc import NoResultFound
-
-engine = create_engine('mssql+pyodbc://DESKTOP-6KMCBC1\\SQLEXPRESS01/Hotel?driver=SQL Server', use_setinputsizes=False)
-
-
 def creer_reservation(reservation: ReservationDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         # Vérifie si le client existe
         client = session.execute(select(Client).where(Client.id_client == reservation.fk_id_client)).scalar_one_or_none()
         if client is None:
@@ -108,7 +106,7 @@ def creer_reservation(reservation: ReservationDTO):
         return reservation_dto
     
 def modifier_reservation(id_reservation: UUID, reservation: ReservationDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         # Vérifie si la réservation existe
         existing_reservation = session.execute(select(Reservation).where(Reservation.id_reservation == id_reservation)).scalar_one_or_none()
         if existing_reservation is None:
@@ -152,7 +150,7 @@ def modifier_reservation(id_reservation: UUID, reservation: ReservationDTO):
 
 
 def supprimer_reservation(id_reservation: UUID):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         # Vérifie si la réservation existe
         reservation = session.execute(select(Reservation).where(Reservation.id_reservation == id_reservation)).scalar_one_or_none()
         if reservation is None:
@@ -165,7 +163,7 @@ def supprimer_reservation(id_reservation: UUID):
         return {"status": "Réservation supprimée avec succès."}
     
 def rechercher_reservation(criteres: CriteresRechercheDTO):
-    with Session(engine) as session:
+    with SessionLocal() as session:
         stmt = select(Reservation)
         
         # Applique les filtres en fonction des critères de recherche
