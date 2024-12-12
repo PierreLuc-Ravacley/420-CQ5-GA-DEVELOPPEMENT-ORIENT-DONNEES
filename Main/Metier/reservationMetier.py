@@ -12,7 +12,6 @@ from DTO.reservationDTO import CriteresRechercheDTO, ReservationDTO
 
 from database import SessionLocal
 
-
 def rechercherReservation(criteres: CriteresRechercheDTO):
     with SessionLocal() as session:
 
