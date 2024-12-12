@@ -51,7 +51,4 @@ def rechercherChambreLibre(criteres: CriteresRechercheDTO):
         for chambre in session.execute(stmt).scalars():
             if stmt.where(Chambre.numero_chambre == criteres.numero_chambre and Chambre.disponible_reservation == "1"):
                 chambres.append(ChambreDTO(chambre))
-        return  
-           
-            
-            
+        return             
