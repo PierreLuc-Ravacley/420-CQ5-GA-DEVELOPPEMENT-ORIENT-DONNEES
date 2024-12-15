@@ -7,3 +7,6 @@ Seuls les services de rechercherReservation et AjouterReservation sont connecté
 Changer l'URL dans database.py (ligne 5) selon la base de données utilisée.
 
 DATABASE_URL = 'mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Server'
+
+
+Jira : https://plravacley.atlassian.net/jira/software/projects/KAN/boards/1
