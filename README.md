@@ -10,3 +10,5 @@ DATABASE_URL = 'mssql+pyodbc://DESKTOP-6H6E5UF\\SQLEXPRESS/Hotel?driver=SQL Serv
 
 
 Jira : https://plravacley.atlassian.net/jira/software/projects/KAN/boards/1
+
+Front-End : https://github.com/PierreLuc-Ravacley/420-CQ5-GA-DEVELOPPEMENT-ORIENT-DONNEES-FRONT-END.git
