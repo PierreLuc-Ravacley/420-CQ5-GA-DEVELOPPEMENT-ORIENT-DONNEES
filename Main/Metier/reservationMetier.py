@@ -2,6 +2,9 @@ from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 
 from uuid import UUID
+import uuid
+
+
 from datetime import datetime
 
 from Modele.reservation import Reservation
@@ -85,6 +88,7 @@ def creer_reservation(reservation: ReservationDTO):
 
         # Créer la réservation
         nouvelle_reservation = Reservation(
+            id_reservation=uuid.uuid4(),
             fk_id_client=reservation.fk_id_client,
             fk_id_chambre=reservation.fk_id_chambre,
             date_debut_reservation=datetime.combine(reservation.dateDebut, datetime.min.time()),  

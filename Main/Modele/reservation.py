@@ -21,3 +21,4 @@ class Reservation(Base):
     # Use string references to avoid circular import
     client: Mapped["Client"] = relationship("Modele.client.Client", back_populates="reservations")
     chambre: Mapped["Chambre"] = relationship("Modele.chambre.Chambre", back_populates="reservations")
+    

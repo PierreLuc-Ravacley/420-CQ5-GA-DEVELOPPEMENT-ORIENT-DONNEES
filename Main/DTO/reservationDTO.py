@@ -4,8 +4,10 @@ from datetime import date
 import re
 from Modele.reservation import Reservation
 from DTO.chambreDTO import ChambreDTO
+from DTO.clientDTO import ClientDTO
 
 class ReservationDTO(BaseModel):
+    id_reservation: UUID | None = None # Reservation ID is mandatory
     fk_id_client: UUID  # Client ID is mandatory
     fk_id_chambre: UUID  # Chambre ID is mandatory
     dateDebut: date  # Start date is mandatory
@@ -13,6 +15,7 @@ class ReservationDTO(BaseModel):
     prixParJour: float  # Daily price is mandatory
     infoReservation: str | None = None  # Reservation info is optional
     chambre: ChambreDTO | None = None  # ChambreDTO (if needed)
+    client: ClientDTO | None = None # ChambreDTO (if needed)
 
     @validator("dateDebut", "dateFin", pre=True)
     def validate_dates(cls, value):
@@ -35,6 +38,7 @@ class ReservationDTO(BaseModel):
     @classmethod
     def from_model(cls, reservation: Reservation):
         return cls(
+            id_reservation=reservation.id_reservation,
             fk_id_client=reservation.fk_id_client,
             fk_id_chambre=reservation.fk_id_chambre,
             dateDebut=reservation.date_debut_reservation.date(),
@@ -42,6 +46,7 @@ class ReservationDTO(BaseModel):
             prixParJour=reservation.prix_jour,
             infoReservation=reservation.info_reservation,
             chambre=ChambreDTO.from_model(reservation.chambre) if reservation.chambre else None, 
+            client=ClientDTO.from_orm(reservation.client) if reservation.client else None
         )
 
 
